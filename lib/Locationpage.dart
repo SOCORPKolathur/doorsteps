@@ -230,7 +230,6 @@ class _LocationPageState extends State<LocationPage> {
 
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
-    //ddd
     LocationPermission permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
