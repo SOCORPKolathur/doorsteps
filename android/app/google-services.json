@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "620465120662",
+    "project_id": "door-steps-1780c",
+    "storage_bucket": "door-steps-1780c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620465120662:android:c26fd4aa426d425598e9b7",
+        "android_client_info": {
+          "package_name": "com.example.doorsteps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620465120662-em13kcuu8nmkldm9bdh5menhfmh877bu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.doorsteps",
+            "certificate_hash": "0c490520831f4346e166b88d184f4299bafc8151"
+          }
+        },
+        {
+          "client_id": "620465120662-ghm3inuvpe4t5qgkalpa40vrqla3j4l2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_eT3oT-cOgqnn4zY39efA9Spb9j7ZHyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620465120662-ghm3inuvpe4t5qgkalpa40vrqla3j4l2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
