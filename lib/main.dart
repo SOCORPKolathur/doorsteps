@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         primary: primarycolor,
       ),
         ),
-      home:  FirebaseAuth.instance.currentUser==null?WelcomePage():LocationPage("1654654654",false),
+      home:  FirebaseAuth.instance.currentUser==null?WelcomePage():LandingPage2(),
     );
   }
 }
