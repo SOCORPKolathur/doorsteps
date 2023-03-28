@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doorsteps/const.dart';
+import 'package:doorsteps/shopsdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -64,255 +67,123 @@ class _ShopsState extends State<Shops> {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Material(
-                elevation: 2.0,
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-
-                  width: 320,
-                  height: 180,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection("Shops").snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.hasData==null) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context,index) {
+                    var val = snapshot.data!.docs[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Material(
+                        elevation: 2.0,
+                        borderRadius: BorderRadius.circular(20),
                         child: Container(
-                            width: 100,
-                            height: 100,
-                            child: Image.network(vega)),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Trades Shop",style: GoogleFonts.poppins(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                            fontSize: width/15.84,
-                          )),
-                          Text("Anna Nagar Street \n Chennai ",style: GoogleFonts.poppins(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: width/25.84,
-                          )),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: IgnorePointer(
-                              child: Container(
-                                height: 20,
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: RatingBar(
-                                    itemSize: 15,
-                                    initialRating:4.0,
-                                    direction: Axis.horizontal,
-                                    allowHalfRating: true,
-                                    itemCount: 5,
-                                    ratingWidget: RatingWidget(
-                                        full:Image.asset('assets/Star 1.png'),
-                                        half:Image.asset('assets/Star 1.png') ,
-                                        empty: Icon(Icons.star,color: Colors.transparent,)  ),
-                                    itemPadding:  EdgeInsets.symmetric(horizontal: 4.0) ,
-                                    onRatingUpdate:(rating) {
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
+
+                          width: 320,
+                          height: 180,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          Container(
-                            width: 100,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: primarycolor,
-                              borderRadius: BorderRadius.circular(7),
-                            ),
-                            child: Center(child: Text("View",style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: width/23.84,
-                            ))),
-                          )
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                    width: 100,
+                                    height: 100,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: CachedNetworkImage(
 
-                        ],
-                      )
-                    ],
-
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Material(
-                elevation: 2.0,
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-
-                  width: 320,
-                  height: 180,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                            width: 100,
-                            height: 100,
-                            child: Image.network(vega)),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Trades Shop",style: GoogleFonts.poppins(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                            fontSize: width/15.84,
-                          )),
-                          Text("Anna Nagar Street \n Chennai ",style: GoogleFonts.poppins(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: width/25.84,
-                          )),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: IgnorePointer(
-                              child: Container(
-                                height: 20,
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: RatingBar(
-                                    itemSize: 15,
-                                    initialRating:4.0,
-                                    direction: Axis.horizontal,
-                                    allowHalfRating: true,
-                                    itemCount: 5,
-                                    ratingWidget: RatingWidget(
-                                        full:Image.asset('assets/Star 1.png'),
-                                        half:Image.asset('assets/Star 1.png') ,
-                                        empty: Icon(Icons.star,color: Colors.transparent,)  ),
-                                    itemPadding:  EdgeInsets.symmetric(horizontal: 4.0) ,
-                                    onRatingUpdate:(rating) {
-                                    },
-                                  ),
-                                ),
+                                          imageUrl:  val["imgurl"],fit: BoxFit.cover,),
+                                    )),
                               ),
-                            ),
-                          ),
-                          Container(
-                            width: 100,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: primarycolor,
-                              borderRadius: BorderRadius.circular(7),
-                            ),
-                            child: Center(child: Text("View",style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: width/23.84,
-                            ))),
-                          )
-
-                        ],
-                      )
-                    ],
-
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Material(
-                elevation: 2.0,
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-
-                  width: 320,
-                  height: 180,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                            width: 100,
-                            height: 100,
-                            child: Image.network(vega)),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Trades Shop",style: GoogleFonts.poppins(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                            fontSize: width/15.84,
-                          )),
-                          Text("Anna Nagar Street \n Chennai ",style: GoogleFonts.poppins(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: width/25.84,
-                          )),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: IgnorePointer(
-                              child: Container(
-                                height: 20,
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: RatingBar(
-                                    itemSize: 15,
-                                    initialRating:4.0,
-                                    direction: Axis.horizontal,
-                                    allowHalfRating: true,
-                                    itemCount: 5,
-                                    ratingWidget: RatingWidget(
-                                        full:Image.asset('assets/Star 1.png'),
-                                        half:Image.asset('assets/Star 1.png') ,
-                                        empty: Icon(Icons.star,color: Colors.transparent,)  ),
-                                    itemPadding:  EdgeInsets.symmetric(horizontal: 4.0) ,
-                                    onRatingUpdate:(rating) {
-                                    },
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(val["name"],style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: width/15.84,
+                                  )),
+                                  Text(val["address"],style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: width/25.84,
+                                  )),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: IgnorePointer(
+                                      child: Container(
+                                        height: 20,
+                                        child: FittedBox(
+                                          fit: BoxFit.contain,
+                                          child: RatingBar(
+                                            itemSize: 15,
+                                            initialRating:4.0,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 5,
+                                            ratingWidget: RatingWidget(
+                                                full:Image.asset('assets/Star 1.png'),
+                                                half:Image.asset('assets/Star 1.png') ,
+                                                empty: Icon(Icons.star,color: Colors.transparent,)  ),
+                                            itemPadding:  EdgeInsets.symmetric(horizontal: 4.0) ,
+                                            onRatingUpdate:(rating) {
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ),
+                                  GestureDetector(
+                                    onTap: (){
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(builder: (context)=> ShopD(val.id)));
+                                    },
+                                    child: Container(
+                                      width: 100,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        color: primarycolor,
+                                        borderRadius: BorderRadius.circular(7),
+                                      ),
+                                      child: Center(child: Text("View",style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: width/23.84,
+                                      ))),
+                                    ),
+                                  )
+
+                                ],
+                              )
+                            ],
+
                           ),
-                          Container(
-                            width: 100,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: primarycolor,
-                              borderRadius: BorderRadius.circular(7),
-                            ),
-                            child: Center(child: Text("View",style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: width/23.84,
-                            ))),
-                          )
-
-                        ],
-                      )
-                    ],
-
-                  ),
-                ),
-              ),
+                        ),
+                      ),
+                    );
+                  }
+                );
+              }
             ),
+
             ],
         ),
       ),

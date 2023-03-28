@@ -1,3 +1,4 @@
+import 'package:doorsteps/offers.dart';
 import 'package:flutter/material.dart';
 import 'package:bottom_bar_matu/bottom_bar/bottom_bar_bubble.dart';
 import 'package:bottom_bar_matu/bottom_bar_item.dart';
@@ -100,11 +101,18 @@ class _HomePGState extends State<HomePG> {
                     fontWeight: FontWeight.w700,
                     fontSize: width/15.84,
                   ),),
-                  Text("Sell All",style: GoogleFonts.poppins(
-                    color: primarycolor,
-                    fontWeight: FontWeight.w700,
-                    fontSize: width/20.84,
-                  ),),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context)=> Offers())
+                      );
+                    },
+                    child: Text("Sell All",style: GoogleFonts.poppins(
+                      color: primarycolor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: width/20.84,
+                    ),),
+                  ),
                 ],
               ),
             ),

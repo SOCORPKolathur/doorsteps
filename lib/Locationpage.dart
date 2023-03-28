@@ -183,7 +183,7 @@ class _LocationPageState extends State<LocationPage> {
 
 
     });
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LandingPage2()));
     print("Valied Otp");
 
 
