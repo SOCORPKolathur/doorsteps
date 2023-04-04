@@ -18,6 +18,32 @@ class HomePG extends StatefulWidget {
 }
 
 class _HomePGState extends State<HomePG> {
+
+  String name ="";
+  String phone ="";
+  String pincode ="";
+  String address ="";
+  double latitude =0.00;
+  double longitude =0.00;
+  getuser() async {
+    var document = await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid.toString()).get();
+    Map<String, dynamic>? value = document.data();
+    setState(() {
+      name=value!["name"];
+      phone=value["phone"];
+      pincode=value["pincode"];
+      address=value["address"];
+      latitude=double.parse(value["latitude"].toString());
+      longitude=double.parse(value["longitude"].toString());
+    });
+  }
+  @override
+  void initState() {
+    getuser();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width=MediaQuery.of(context).size.width;
@@ -30,31 +56,47 @@ class _HomePGState extends State<HomePG> {
             Padding(
               padding: const EdgeInsets.only(top: 50.0,left: 20,right: 20,bottom: 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap:(){
-                      FirebaseAuth.instance.signOut();
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
 
-              },
-                    child: Text("Chennai",style: GoogleFonts.poppins(
-                      color: Colors.black45,
-                      fontWeight: FontWeight.w600,
-                      fontSize: width/22.84,
-                    ),),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Text("Door Steps",style: GoogleFonts.rowdies(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: width/12.84,
+                        )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Row(
+                          children: [
+                            Text(pincode,style: GoogleFonts.poppins(
+                              color: Colors.black45,
+                              fontWeight: FontWeight.w600,
+                              fontSize: width/22.84,
+                            ),),
+                            Icon(Icons.location_on, color: Colors.black45,)
+                          ],
+                        ),
+                      ),
+
+                    ],
                   ),
-                  Icon(Icons.location_on, color: Colors.black45,)
+                  Container(
+                      width: 120,
+                      child: Image.asset(logoblack)),
+
                 ],
               ),
             ),
-            Image.asset(logoblack),
-            Text("Door Steps",style: GoogleFonts.rowdies(
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-              fontSize: width/12.84,
-            )),
+
+
             Padding(
-              padding: const EdgeInsets.only(top: 20.0,right: 20,left: 20,bottom: 10),
+              padding: const EdgeInsets.only(top: 8.0,right: 20,left: 20,bottom: 10),
               child: Container(
                 width: 350,
                 height: 50,
@@ -354,7 +396,6 @@ class _HomePGState extends State<HomePG> {
           ],
         ),
       ),
-
     );
   }
 }

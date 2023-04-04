@@ -2,7 +2,7 @@ import 'dart:ui';
 
 const primarycolor = const Color(0xff53B175);
 const logo = "assets/logo.png";
-const logoblack = "assets/Group.png";
+const logoblack = "assets/drlogo.png";
 const signin = "assets/signin.png";
 const otpback = "assets/otpback.png";
 const loactionimage = "assets/illustration.png";

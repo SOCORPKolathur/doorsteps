@@ -147,8 +147,8 @@ class _OtpState extends State<Otp> {
                                       verificationId:_verificationCode ,
                                       smsCode: otp.text)).then((value){
                                 if(value.user!=null){
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context)=> LocationPage(widget.phonenumer,ison)));
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(builder: (context)=> LocationPage(widget.phonenumer,ison)),(Route<dynamic> route) => false);
                                 }
                                 print("Register otp page");
                               });
@@ -165,7 +165,7 @@ class _OtpState extends State<Otp> {
 
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0,top: 10),
-                  child: Text("Resende Code",style: GoogleFonts.poppins(
+                  child: Text("Resend Code",style: GoogleFonts.poppins(
                     color: primarycolor,
                     fontWeight: FontWeight.w700,
                     fontSize: width/20.84,
@@ -188,7 +188,22 @@ class _OtpState extends State<Otp> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: primarycolor,
         onPressed: (){
-
+          try{
+            FirebaseAuth.instance.signInWithCredential(
+                PhoneAuthProvider.credential(
+                    verificationId:_verificationCode ,
+                    smsCode: otp.text)).then((value){
+              if(value.user!=null){
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context)=> LocationPage(widget.phonenumer,ison)));
+              }
+              print("Register otp page");
+            });
+          }
+          catch(e){
+            print(e);
+            print('this errrrrorrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+          }
         },
         child: Icon(Icons.arrow_forward_ios),
       ),

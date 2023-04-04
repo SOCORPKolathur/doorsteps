@@ -1,3 +1,4 @@
+import 'package:doorsteps/checkout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:bottom_bar_matu/bottom_bar/bottom_bar_bubble.dart';
@@ -10,6 +11,8 @@ import 'package:doorsteps/slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:random_string/random_string.dart';
 
 class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);
@@ -200,6 +203,7 @@ class _CartState extends State<Cart> {
             padding: const EdgeInsets.only(left: 30.0, top: 650),
             child: GestureDetector(
               onTap: () {
+               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CheckOut(total)));
               },
               child: Container(
 
@@ -253,4 +257,6 @@ class _CartState extends State<Cart> {
     });
     return total.toString();
   }
+
+
 }

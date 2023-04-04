@@ -1,3 +1,5 @@
+import 'package:doorsteps/MyDetails.dart';
+import 'package:doorsteps/myorders.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:bottom_bar_matu/bottom_bar/bottom_bar_bubble.dart';
@@ -58,6 +60,10 @@ class _ProfileState extends State<Profile> {
                         fontSize: width/25.84,
                       ),),
                       trailing: Icon(Icons.edit,color: primarycolor,),
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyDeatils()));
+
+                      },
                     ),
                   ),
                   Padding(
@@ -67,6 +73,9 @@ class _ProfileState extends State<Profile> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: ListTile(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Myorders()));
+                      },
                       leading: Icon(Icons.shopping_bag_outlined,color: Colors.black,),
                       title: Text("My Orders",style: GoogleFonts.poppins(
                         color: Colors.black,
@@ -84,6 +93,9 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   ListTile(
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyDeatils()));
+                    },
                     leading: Icon(Icons.person_outline_rounded,color: Colors.black,),
                     title: Text("My Details",style: GoogleFonts.poppins(
                       color: Colors.black,
@@ -99,23 +111,11 @@ class _ProfileState extends State<Profile> {
                       color: Colors.black,
                     ),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.location_on,color: Colors.black,),
-                    title: Text("Delivery Address",style: GoogleFonts.poppins(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                      fontSize: width/20.84,
-                    ),),
 
-                    trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0,right:8.0),
-                    child: Divider(
-                      color: Colors.black,
-                    ),
-                  ),
                   ListTile(
+                    onTap: (){
+                      _showMyDialog();
+                    },
                     leading: Icon(Icons.help_outline_rounded,color: Colors.black,),
                     title: Text("Help",style: GoogleFonts.poppins(
                       color: Colors.black,
@@ -131,25 +131,6 @@ class _ProfileState extends State<Profile> {
                       color: Colors.black,
                     ),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.error_outline_rounded,color: Colors.black,),
-                    title: Text("About",style: GoogleFonts.poppins(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                      fontSize: width/20.84,
-                    ),),
-
-                    trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0,right:8.0),
-                    child: Divider(
-                      color: Colors.black,
-                    ),
-                  ),
-
-
-
 
 
                 ],
@@ -157,6 +138,67 @@ class _ProfileState extends State<Profile> {
             );
           }
       ),
+    );
+  }
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title:  Text("Want to get help ?",style: GoogleFonts.poppins(
+            color: Colors.black,
+            fontWeight: FontWeight.w800,
+            fontSize: 18,
+          ),
+            textAlign: TextAlign.center,
+
+          ),
+          content: Container(
+            height: 100,
+            child: Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.call,color: primarycolor,),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text("Call Now",style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                      fontSize:18,
+                    ),),
+                  ),
+
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.mail,color: primarycolor,),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text("Mail Now",style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                        fontSize:18,
+                      ),),
+                    ),
+
+                  ],
+                ),
+              ),
+
+            ],),
+          ),
+          alignment: Alignment.center,
+          actionsAlignment: MainAxisAlignment.center,
+          titlePadding: EdgeInsets.all(8),
+
+        );
+      },
     );
   }
 }

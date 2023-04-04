@@ -165,10 +165,8 @@ class _ProductPageState extends State<ProductPage> {
                 padding: const EdgeInsets.only(left: 30.0, top: 80),
                 child: GestureDetector(
                   onTap: () {
-                    cart(item["name"],item["quantity"],item["price"],item["image"]);
-
-
-                  },
+                    checkvender(item["name"],item["quantity"],item["price"],item["image"],item["vender"]);
+                    },
                   child: Container(
 
                     width: 300,
@@ -197,7 +195,25 @@ class _ProductPageState extends State<ProductPage> {
       ),
     );
   }
-  cart(name,subtitle,price,img){
+
+  checkvender(name,subtitle,price,img,vender) async {
+    var docu= await FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Cart").get();
+    var docu2= await FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Cart").where("vender",isEqualTo: vender).get();
+    if(docu.docs.length>0){
+      if(docu2.docs.length>0){
+        cart(name,subtitle,price,img,vender);
+      }
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Sorry your trying to choose multiple vendors")));
+      }
+    }
+    else{
+      cart(name,subtitle,price,img,vender);
+    }
+  }
+
+  cart(name,subtitle,price,img,vender){
     FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Cart").doc().set({
       "productid":widget.ProductID,
       "quantity":quanity,
@@ -206,6 +222,7 @@ class _ProductPageState extends State<ProductPage> {
       "price":quanity*price,
       "orgprice":price,
       "imgurl": img,
+      "vender":vender,
       "timestamp": DateTime.now().microsecondsSinceEpoch
     });
     ScaffoldMessenger.of(context).showSnackBar(
