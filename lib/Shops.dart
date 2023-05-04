@@ -93,9 +93,13 @@ class _ShopsState extends State<Shops> {
                         child: Container(
 
                           width: 320,
-                          height: 180,
+                          height: 125,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
+
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: primarycolor,
+                              )
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,7 +131,7 @@ class _ShopsState extends State<Shops> {
                                     fontSize: width/25.84,
                                   )),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(4.0),
                                     child: IgnorePointer(
                                       child: Container(
                                         height: 20,

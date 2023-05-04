@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:random_string/random_string.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);
@@ -66,6 +67,24 @@ class _CartState extends State<Cart> {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
+                      }
+                      if(snapshot.data!.docs.length<=0){
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 80.0),
+                              child: Text("Your Cart is Empty",style: GoogleFonts.poppins(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                                fontSize: width/15.84,
+                              )),
+                            ),
+                            Container(
+                                height:400,
+                                child: SvgPicture.asset("assets/emptycart.svg")),
+                          ],
+                        );
+
                       }
 
 

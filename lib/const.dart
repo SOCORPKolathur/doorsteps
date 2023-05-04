@@ -15,7 +15,7 @@ const meat = "https://firebasestorage.googleapis.com/v0/b/door-steps-1780c.appsp
 const medicne = "https://firebasestorage.googleapis.com/v0/b/door-steps-1780c.appspot.com/o/Explore%2Fmedice.png?alt=media&token=c9694eb1-be57-4e9d-82e2-8923e351e928";
 const food = "https://firebasestorage.googleapis.com/v0/b/door-steps-1780c.appspot.com/o/Explore%2Ffood.png?alt=media&token=10e4c276-97d1-4ebd-8cf8-57a04d458009";
 const deleviry = "https://firebasestorage.googleapis.com/v0/b/door-steps-1780c.appspot.com/o/Explore%2Fdeliviry.png?alt=media&token=bf73168a-0a80-4fae-8b26-1e8cbc28e16d";
-const bike = "https://firebasestorage.googleapis.com/v0/b/door-steps-1780c.appspot.com/o/Explore%2Fbike.png?alt=media&token=d18c4b5e-a7e7-4a7c-9044-c5c067cdb594";
+const bike = "https://firebasestorage.googleapis.com/v0/b/door-steps-1780c.appspot.com/o/Explore%2Fimages-removebg-preview.png?alt=media&token=cbab849a-c2ee-4d3f-a8a2-d4801a0799a7";
 const backery = "https://firebasestorage.googleapis.com/v0/b/door-steps-1780c.appspot.com/o/Explore%2Fbackery.png?alt=media&token=b40f123b-d1eb-4768-923b-69a527017edd";
 const profile = "assets/Profile.png";
 

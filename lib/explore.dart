@@ -1,3 +1,4 @@
+import 'package:doorsteps/Explore/fruits.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:bottom_bar_matu/bottom_bar/bottom_bar_bubble.dart';
@@ -74,30 +75,37 @@ class _ExploreState extends State<Explore> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  width: 160,
-                  height: 160,
-                  decoration: BoxDecoration(
-                      color: Color(0xff53B175).withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                          color: Color(0xff53B175).withOpacity(0.70)
+                GestureDetector(
+                  onTap: (){
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context)=>Fruits())
+                    );
+                  },
+                  child: Container(
+                    width: 160,
+                    height: 160,
+                    decoration: BoxDecoration(
+                        color: Color(0xff53B175).withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            color: Color(0xff53B175).withOpacity(0.70)
 
-                      )
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CachedNetworkImage(imageUrl:vega),
-                      Text("Fresh Fruits \n & Vegetables",style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                        fontSize: width/20.84,
-                      ),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
+                        )
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CachedNetworkImage(imageUrl:vega),
+                        Text("Fresh Fruits \n & Vegetables",style: GoogleFonts.poppins(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontSize: width/20.84,
+                        ),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Container(
@@ -289,10 +297,10 @@ class _ExploreState extends State<Explore> {
                     width: 160,
                     height: 160,
                     decoration: BoxDecoration(
-                        color: Color(0xff99D9FD).withOpacity(0.15),
+                        color: Colors.yellow.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                            color: Color(0xff99D9FD).withOpacity(0.70)
+                            color: Colors.yellow.withOpacity(0.70)
 
                         )
                     ),
@@ -301,8 +309,8 @@ class _ExploreState extends State<Explore> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                            height:100,
-                            child: CachedNetworkImage(imageUrl:bike)),
+                            height:110,
+                            child: CachedNetworkImage(imageUrl:bike,fit: BoxFit.cover,)),
                         Text("Bike Taxi",style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontWeight: FontWeight.w700,

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 import 'const.dart';
+import 'orderdetails.dart';
 
 class Myorders extends StatefulWidget {
   const Myorders({Key? key}) : super(key: key);
@@ -25,11 +26,11 @@ class _MyordersState extends State<Myorders> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-        padding: const EdgeInsets.only(top: 50.0),
-        child: Text("My Orders",style: GoogleFonts.poppins(
-          color: Colors.black,
-          fontWeight: FontWeight.w700,
-          fontSize: width/15.84,
+                padding: const EdgeInsets.only(top: 50.0),
+                child: Text("My Orders",style: GoogleFonts.poppins(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                  fontSize: width/15.84,
         )),
       ),
               Padding(
@@ -40,7 +41,7 @@ class _MyordersState extends State<Myorders> {
         ),
 
               StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Orders").snapshots(),
+                  stream: FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Orders").orderBy("timestamp",descending: true).snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(
@@ -53,6 +54,7 @@ class _MyordersState extends State<Myorders> {
                       );
                     }
                     return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context,index) {
@@ -117,7 +119,7 @@ class _MyordersState extends State<Myorders> {
                                             padding: const EdgeInsets.only(top: 2),
                                             child: Text("Items: ${val["products"]}"),
                                           ),
-                                          Text("Total: Rs.${val["total"]}",style: GoogleFonts.poppins(
+                                          Text(val["total"]=="products"?"Total: Rs.${val["total"]}":"Total: ${val["total"]}",style: GoogleFonts.poppins(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
                                             fontSize: width/18.84,
@@ -127,6 +129,10 @@ class _MyordersState extends State<Myorders> {
                                             children: [
                                               GestureDetector(
                                                 onTap: (){
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(builder: (context)=>OrderDetails(val.id,val["type"],val["total"].toString(),val["name"],val["address"],val["phone"]))
+                                                  );
+                                                  print("${val["type"]}${val["total"].toString()}${val["name"]}${val["address"]}${val["phone"]}");
 
                                                 },
                                                 child: Padding(
@@ -148,6 +154,7 @@ class _MyordersState extends State<Myorders> {
                                               ),
                                               GestureDetector(
                                                 onTap: (){
+                                                  _showMyDialog(val["status"]);
 
                                                 },
                                                 child: Padding(
@@ -189,6 +196,164 @@ class _MyordersState extends State<Myorders> {
 
 
             ])),
+    );
+  }
+  Future<void> _showMyDialog(status) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title:  Text("Track Your Order",style: GoogleFonts.poppins(
+            color: Colors.black,
+            fontWeight: FontWeight.w800,
+            fontSize: 18,
+          ),
+            textAlign: TextAlign.center,
+
+          ),
+          content: Container(
+            height: 300,
+            child: Column(
+              children: [
+                status=="ordered"? Lottie.asset('assets/odertracking.json',):Padding(
+                  padding: const EdgeInsets.only(bottom: 15.0),
+                  child: Container(
+                    height: 200,
+
+                      child: Lottie.asset('assets/orderpickeed.json',fit: BoxFit.cover)),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+
+                    Column(
+                      children: [
+                        status=="ordered"?  Container(
+                            width:30,height: 30,
+                            child: Lottie.asset("assets/live.json",fit: BoxFit.fill)):
+                        Container(
+                          width: 15,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(12)
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text("Order Placed",style: GoogleFonts.poppins(
+                            fontSize: 10
+
+                          ),),
+                        )
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.grey,
+                    ),
+                    Column(
+                      children: [
+                        status=="picked"? Container(
+                            width:30,height: 30,
+                            child: Lottie.asset("assets/live.json",fit: BoxFit.fill)):   Container(
+                          width: 15,
+                          height: 15,
+                          decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(12)
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text("Picked",style: GoogleFonts.poppins(
+                              fontSize: 10
+
+                          ),),
+                        )
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.grey,
+
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          width: 15,
+                          height: 15,
+                          decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(12)
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text("Delivered",style: GoogleFonts.poppins(
+                              fontSize: 10
+
+                          ),),
+                        )
+                      ],
+                    ),
+
+
+                  ],
+                )
+              ],
+            ),
+          ),
+          alignment: Alignment.center,
+          actionsAlignment: MainAxisAlignment.center,
+          titlePadding: EdgeInsets.all(8),
+          actionsPadding: EdgeInsets.symmetric(horizontal: 40),
+          actions: [
+           status=="ordered"? GestureDetector(
+              onTap: () async {
+
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  width: 160,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                  child: Center(child:  Text("Cancel Order",style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ))),
+                ),
+              ),
+            ): GestureDetector(
+             onTap: () async {
+
+             },
+             child: Padding(
+               padding: const EdgeInsets.only(bottom: 8.0),
+               child: Container(
+                 width: 250,
+                 height: 30,
+                 decoration: BoxDecoration(
+                   color: primarycolor,
+                   borderRadius: BorderRadius.circular(7),
+                 ),
+                 child: Center(child:  Text("Call Delivery Person",style: GoogleFonts.poppins(
+                   color: Colors.white,
+                   fontWeight: FontWeight.w600,
+                   fontSize: 15,
+                 ))),
+               ),
+             ),
+           )
+          ],
+
+
+        );
+      },
     );
   }
 }

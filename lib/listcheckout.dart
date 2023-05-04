@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doorsteps/Homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,19 +7,36 @@ import 'package:lottie/lottie.dart';
 import 'package:random_string/random_string.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
-import 'Homepage.dart';
 import 'const.dart';
 
-class CheckOut extends StatefulWidget {
-  CheckOut(this.total);
-  int total;
+class ListCheckout extends StatefulWidget {
+ List items=[];
+ String vendername;
+ ListCheckout(this.items,this.vendername);
 
   @override
-  State<CheckOut> createState() => _CheckOutState();
+  State<ListCheckout> createState() => _ListCheckoutState();
 }
 
-class _CheckOutState extends State<CheckOut> {
-
+class _ListCheckoutState extends State<ListCheckout> {
+  String name ="";
+  String phone ="";
+  String pincode ="";
+  String address ="";
+  double latitude =0.00;
+  double longitude =0.00;
+  getuser() async {
+    var document = await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid.toString()).get();
+    Map<String, dynamic>? value = document.data();
+    setState(() {
+      name=value!["name"];
+      phone=value["phone"];
+      pincode=value["pincode"];
+      address=value["address"];
+      latitude=double.parse(value["latitude"].toString());
+      longitude=double.parse(value["longitude"].toString());
+    });
+  }
   @override
   void initState() {
     getuser();
@@ -59,97 +76,67 @@ class _CheckOutState extends State<CheckOut> {
                     Padding(
                       padding: EdgeInsets.only(left: 10.0),
                       child: Text("Product",style: GoogleFonts.poppins(
-                color: Colors.black,
-                fontWeight: FontWeight.w600,
-                fontSize: width/20.84,
-                )),
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: width/20.84,
+                      )),
                     ),
 
                     Padding(
                       padding: const EdgeInsets.only(left: 120.0),
-                      child: Text("Quantity",style: GoogleFonts.poppins(
-                      color: Colors.black,
+                      child: Text("",style: GoogleFonts.poppins(
+                        color: Colors.black,
                         fontWeight: FontWeight.w600,
                         fontSize: width/20.84,
                       )),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0),
-                      child: Text("Price",style: GoogleFonts.poppins(
-    color: Colors.black,
-    fontWeight: FontWeight.w600,
-    fontSize: width/20.84,
-    )),
+                      child: Text("",style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: width/20.84,
+                      )),
                     )
                   ],
                 ),
-                StreamBuilder(
-                    stream: FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Cart").orderBy("timestamp",descending: true).snapshots(),
-                    builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (!snapshot.hasData) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      if (snapshot.hasData==null) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
+                ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
 
+                    itemCount: widget.items.length,
 
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context,index){
-                            var cart= snapshot.data!.docs[index];
-                            return     Stack(
-
+                    itemBuilder: (context,index){
+                      return Row(
+                        children: [
+                          Container(
+                            width:280,
+                            child: Row(
                               children: [
-
-                                Padding(
-                                  padding: EdgeInsets.only(left: 10.0),
-                                  child: Column(
-
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(cart["name"],style: GoogleFonts.poppins(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: width/20.84,
-                                      )),
-                                      Text(cart["subtitle"],style: GoogleFonts.poppins(
-                                        color: Colors.black45,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: width/25.84,
-                                      ),),
-                                    ],
+                                Text(" ${(index+1).toString()}. ",style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: width/20.84,
+                                )),
+                                Flexible(
+                                  child: Text(widget.items[index].toString(),style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: width/20.84,
+                                  ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 225.0),
-                                  child: Text(cart["quantity"].toString(),style: GoogleFonts.poppins(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: width/20.84,
-                                  )),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 290.0),
-                                  child: Text("₹${cart["price"]}",style: GoogleFonts.poppins(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: width/20.84,
-                                  )),
-                                )
                               ],
-                            );
+                            ),
 
 
-                          });
-                    }
-                ),
+                          ),
+
+
+                        ],
+                      );
+                    }),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Divider(
@@ -157,28 +144,18 @@ class _CheckOutState extends State<CheckOut> {
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
 
                   children: [
 
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0),
-                      child: Text("Total amount",style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: width/20.84,
-                      )),
-                    ),
 
 
-                    Padding(
-                      padding: const EdgeInsets.only(right: 25.0),
-                      child: Text("₹ ${widget.total.toString()}",style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: width/20.84,
-                      )),
-                    )
+
+                    Text("Total amount Will be \n Updated after order placed",style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: width/22.84,
+                    ),textAlign: TextAlign.center,)
                   ],
                 ),
 
@@ -249,7 +226,7 @@ class _CheckOutState extends State<CheckOut> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10.0,top: 10),
+                  padding: const EdgeInsets.only(left: 10.0,top: 10,bottom: 120),
                   child: Text("- Change Address -",style: GoogleFonts.poppins(
                     color: primarycolor,
                     fontWeight: FontWeight.w700,
@@ -267,8 +244,8 @@ class _CheckOutState extends State<CheckOut> {
             padding: const EdgeInsets.only(top: 700,left: 30),
             child: GestureDetector(
               onTap: () {
-                _showMyDialog();
-                placeorder();
+             _showMyDialog();
+              placeorder();
               },
               child: Shimmer(
                 enabled: true,
@@ -284,7 +261,7 @@ class _CheckOutState extends State<CheckOut> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children:[
-                        Text("Proceed to Pay", style: GoogleFonts.poppins(
+                        Text("Place Order", style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
                           fontSize: width / 18.84,
@@ -322,11 +299,7 @@ class _CheckOutState extends State<CheckOut> {
           actions: [
             GestureDetector(
               onTap: () async {
-                var docu= await FirebaseFirestore.instance.collection("Users").doc(
-                    FirebaseAuth.instance.currentUser!.uid.toString()).collection("Cart").get();
-                for(int i=0;i<docu.docs.length;i++) {
-                  FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Cart").doc(docu.docs[i].id).delete();
-                }
+                widget.items.clear();
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context)=> LandingPage2()),(Route<dynamic> route) => false);
               },
@@ -359,84 +332,27 @@ class _CheckOutState extends State<CheckOut> {
     setState((){
       ram = randomAlphaNumeric(10);
     });
-    var docu= await FirebaseFirestore.instance.collection("Users").doc(
-        FirebaseAuth.instance.currentUser!.uid.toString()).collection("Cart").get();
+    var docu= await FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Cart").get();
     FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Orders").doc(ram).set(
         {
           "timestamp": DateTime.now().microsecondsSinceEpoch,
           "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
           "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
-          "total":widget.total,
+          "total":"Will Update You Soon..",
           "address":address,
           "name":name,
           "phone":phone,
           "orderid":ram,
           "status":"ordered",
-          "type":"products",
-          "vender":docu.docs[0]["vender"],
-          "products": docu.docs.length>=2?"${docu.docs[0]["name"]},${docu.docs[1]["name"]}":"${docu.docs[0]["name"]}...",
+          "type":"typelist",
+          "vender":widget.vendername,
+          "products": "You have given List Items",
         });
-
-    FirebaseFirestore.instance.collection("Orders").doc(ram).set(
-        {
-          "timestamp": DateTime.now().microsecondsSinceEpoch,
-          "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
-          "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
-          "total":widget.total,
-          "address":address,
-          "name":name,
-          "phone":phone,
-          "orderid":ram,
-          "status":"ordered",
-          "type":"products",
-          "vender":docu.docs[0]["vender"],
-          "products": docu.docs.length>=2?"${docu.docs[0]["name"]},${docu.docs[1]["name"]}":"${docu.docs[0]["name"]}...",
-          "latitude":latitude,
-          "longitude":longitude,
-        });
-
-    for(int i=0;i<docu.docs.length;i++) {
-      FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Orders").doc(ram).collection(ram).doc(i.toString()).set({
-        "productid": docu.docs[i]["productid"],
-        "quantity": docu.docs[i]["quantity"],
-        "name": docu.docs[i]["name"],
-        "price": docu.docs[i]["price"],
-        "orgprice": docu.docs[i]["orgprice"],
-        "timestamp": DateTime.now().microsecondsSinceEpoch,
-        "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
-        "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
-      });
-      FirebaseFirestore.instance.collection("Orders").doc(ram).collection(ram).doc(i.toString()).set({
-        "productid": docu.docs[i]["productid"],
-        "quantity": docu.docs[i]["quantity"],
-        "name": docu.docs[i]["name"],
-        "price": docu.docs[i]["price"],
-        "orgprice": docu.docs[i]["orgprice"],
-        "timestamp": DateTime.now().microsecondsSinceEpoch,
-        "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
-        "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
-      });
-    }
-
-  }
-  String name ="";
-  String phone ="";
-  String pincode ="";
-  String address ="";
-  double latitude =0.00;
-  double longitude =0.00;
-  getuser() async {
-    var document = await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid.toString()).get();
-    Map<String, dynamic>? value = document.data();
-    setState(() {
-      name=value!["name"];
-      phone=value["phone"];
-      pincode=value["pincode"];
-      address=value["address"];
-      latitude=double.parse(value["latitude"].toString());
-      longitude=double.parse(value["longitude"].toString());
+    FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Orders").doc(ram).collection(ram).doc("0").set({
+      "productslist": widget.items,
+      "timestamp": DateTime.now().microsecondsSinceEpoch,
+      "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
+      "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
     });
   }
-
-
 }

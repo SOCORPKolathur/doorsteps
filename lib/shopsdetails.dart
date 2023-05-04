@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doorsteps/shopproducts.dart';
+import 'package:doorsteps/takelistphoto.dart';
+import 'package:doorsteps/typelist.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 import 'const.dart';
 
@@ -108,9 +112,8 @@ class _ShopDState extends State<ShopD> {
                       padding: const EdgeInsets.only(left: 30.0, top: 30),
                       child: GestureDetector(
                         onTap: () {
-
-
-
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context)=> ShopProducts(item["name"],widget.shopid)));
                         },
                         child: Container(
 
@@ -134,9 +137,7 @@ class _ShopDState extends State<ShopD> {
                       padding: const EdgeInsets.only(left: 30.0, top: 10),
                       child: GestureDetector(
                         onTap: () {
-
-
-
+                          _showMyDialog(item["name"]);
                         },
                         child: Container(
 
@@ -166,4 +167,76 @@ class _ShopDState extends State<ShopD> {
       ),
     );
   }
+  Future<void> _showMyDialog(vendername) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title:  Text("Choose Your List Method",style: GoogleFonts.poppins(
+            color: Colors.black,
+            fontWeight: FontWeight.w800,
+            fontSize: 18,
+          ),
+            textAlign: TextAlign.center,
+
+          ),
+          content: Lottie.asset('assets/shoplist.json',),
+          alignment: Alignment.center,
+          actionsAlignment: MainAxisAlignment.center,
+          titlePadding: EdgeInsets.all(8),
+          actionsPadding: EdgeInsets.symmetric(horizontal: 60),
+          actions: [
+            GestureDetector(
+              onTap: () async {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context)=> TypeList(vendername)));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  width: 160,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: primarycolor,
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                  child: Center(child:  Text("Type List",style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ))),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context)=> TakePhoto(vendername)));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  width: 160,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: primarycolor,
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                  child: Center(child:  Text("Take Photo",style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ))),
+                ),
+              ),
+            ),
+          ],
+
+
+        );
+      },
+    );
+  }
+
 }

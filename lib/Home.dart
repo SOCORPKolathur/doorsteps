@@ -10,6 +10,7 @@ import 'package:doorsteps/slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 class HomePG extends StatefulWidget {
   const HomePG({Key? key}) : super(key: key);
 
@@ -54,49 +55,63 @@ class _HomePGState extends State<HomePG> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 50.0,left: 20,right: 20,bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              padding: const EdgeInsets.only(top: 0.0,left: 20,right: 20,bottom: 10),
+              child: Stack(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
 
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Text("Door Steps",style: GoogleFonts.rowdies(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: width/12.84,
-                        )),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: Row(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 110.0),
+                    child: Container(
+                      height:120,
+                        width: 250,
+
+                        child: Lottie.asset('assets/logoanime.json',fit: BoxFit.fitWidth, )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 50.0),
+                    child: Row(
+
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(pincode,style: GoogleFonts.poppins(
-                              color: Colors.black45,
-                              fontWeight: FontWeight.w600,
-                              fontSize: width/22.84,
-                            ),),
-                            Icon(Icons.location_on, color: Colors.black45,)
+
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Text("Door Steps",style: GoogleFonts.rowdies(
+                                color: Color(0xff5EB53E),
+                                fontWeight: FontWeight.w600,
+                                fontSize: width/12.84,
+                              )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5.0),
+                              child: Row(
+                                children: [
+                                  Text(pincode,style: GoogleFonts.poppins(
+                                    color: Colors.black45,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: width/22.84,
+                                  ),),
+                                  Icon(Icons.location_on, color: Colors.black45,)
+                                ],
+                              ),
+                            ),
+
                           ],
                         ),
-                      ),
 
-                    ],
+
+                      ],
+                    ),
                   ),
-                  Container(
-                      width: 120,
-                      child: Image.asset(logoblack)),
-
                 ],
               ),
             ),
 
 
             Padding(
-              padding: const EdgeInsets.only(top: 8.0,right: 20,left: 20,bottom: 10),
+              padding: const EdgeInsets.only(top: 10.0,right: 20,left: 20,bottom: 10),
               child: Container(
                 width: 350,
                 height: 50,
@@ -205,39 +220,66 @@ class _HomePGState extends State<HomePG> {
                                 child: Stack(
                                   alignment: Alignment.bottomRight,
                                   children: [
-                                    Column(
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 10.0),
+                                      child: Column(
 
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 15.0,right: 20,left: 20),
-                                          child:  CachedNetworkImage(imageUrl: item["image"]),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 8.0),
-                                          child: Text(item["name"],style: GoogleFonts.poppins(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: width/20.84,
-                                          ),),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 8.0),
-                                          child: Text(item["quantity"],style: GoogleFonts.poppins(
-                                            color: Colors.black45,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: width/22.84,
-                                          ),),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 8.0),
-                                          child: Text("Rs ${item["price"].toString()}",style: GoogleFonts.poppins(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: width/20.84,
-                                          ),),
-                                        ),
-                                      ],
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 15.0,right: 0,left: 20),
+                                            child:  Container(
+                                                width: 100,
+                                                height: 100,
+
+
+                                                child: CachedNetworkImage(imageUrl: item["image"])),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 8.0),
+                                            child: Container(
+
+                                              width: 200,
+                                              height: 30,
+                                              child: Text(item["name"],style: GoogleFonts.poppins(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: width/20.84,
+                                              ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 8.0),
+                                            child: Container(
+                                              width: 120,
+                                              height: 20,
+
+                                              child: Text(item["quantity"],style: GoogleFonts.poppins(
+                                                color: Colors.black45,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: width/22.84,
+                                              ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 8.0),
+                                            child: Container(
+                                              width: 100,
+                                              height: 30,
+                                              child: Text("Rs. ${item["price"].toString()}",style: GoogleFonts.poppins(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: width/20.84,
+                                              ),
+                                                overflow: TextOverflow.ellipsis,),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
 
                                     Padding(
@@ -330,39 +372,66 @@ class _HomePGState extends State<HomePG> {
                                   child: Stack(
                                     alignment: Alignment.bottomRight,
                                     children: [
-                                      Column(
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 10.0),
+                                        child: Column(
 
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 15.0,right: 20,left: 20),
-                                            child:  CachedNetworkImage(imageUrl: item["image"]),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 8.0),
-                                            child: Text(item["name"],style: GoogleFonts.poppins(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: width/20.84,
-                                            ),),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 8.0),
-                                            child: Text(item["quantity"],style: GoogleFonts.poppins(
-                                              color: Colors.black45,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: width/22.84,
-                                            ),),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 8.0),
-                                            child: Text("Rs ${item["price"].toString()}",style: GoogleFonts.poppins(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: width/20.84,
-                                            ),),
-                                          ),
-                                        ],
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 15.0,right: 0,left: 20),
+                                              child:  Container(
+                                                  width: 100,
+                                                  height: 100,
+
+
+                                                  child: CachedNetworkImage(imageUrl: item["image"])),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 8.0),
+                                              child: Container(
+
+                                                width: 200,
+                                                height: 30,
+                                                child: Text(item["name"],style: GoogleFonts.poppins(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: width/20.84,
+                                                ),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 8.0),
+                                              child: Container(
+                                                width: 120,
+                                                height: 20,
+
+                                                child: Text(item["quantity"],style: GoogleFonts.poppins(
+                                                  color: Colors.black45,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: width/22.84,
+                                                ),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 8.0),
+                                              child: Container(
+                                                width: 100,
+                                                height: 30,
+                                                child: Text("Rs. ${item["price"].toString()}",style: GoogleFonts.poppins(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: width/20.84,
+                                                ),
+                                                  overflow: TextOverflow.ellipsis,),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
 
                                       Padding(
