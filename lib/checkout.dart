@@ -46,7 +46,12 @@ class _CheckOutState extends State<CheckOut> {
                     fontSize: width/15.84,
                   )),
                 ),
-
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Divider(
+                    color: Colors.black,
+                  ),
+                ),
                 Row(
 
                   children: [
