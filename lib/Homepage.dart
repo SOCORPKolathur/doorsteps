@@ -12,6 +12,7 @@ import 'package:doorsteps/productpage.dart';
 import 'package:doorsteps/slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
@@ -144,10 +145,18 @@ class _LandingPage2State extends State<LandingPage2> {
 
   @override
   void initState() {
+    getUserCurrentLocation();
     // TODO: implement initState
     super.initState();
   }
-
+  Future<Position> getUserCurrentLocation() async {
+    await Geolocator.requestPermission().then((value){
+    }).onError((error, stackTrace) async {
+      await Geolocator.requestPermission();
+      print("ERROR"+error.toString());
+    });
+    return await Geolocator.getCurrentPosition();
+  }
   final screens = <Widget>[
     HomePG(),
     Explore(),

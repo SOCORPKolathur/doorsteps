@@ -23,7 +23,8 @@ class _OrderDetailsState extends State<OrderDetails> {
     final double width=MediaQuery.of(context).size.width;
     final double height=MediaQuery.of(context).size.height;
     return Scaffold(
-      body: widget.type=="products"  ?  SingleChildScrollView(
+      body: widget.type=="products"  ?
+      SingleChildScrollView(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -50,24 +51,32 @@ class _OrderDetailsState extends State<OrderDetails> {
                     child: Text("Product",style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
-                      fontSize: width/20.84,
+                      fontSize: width/23.84,
+                    )),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 90.0),
+                    child: Text("Price",style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: width/23.84,
                     )),
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.only(left: 120.0),
+                    padding: const EdgeInsets.only(left: 10.0),
                     child: Text("Quantity",style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
-                      fontSize: width/20.84,
+                      fontSize: width/23.84,
                     )),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0),
-                    child: Text("Price",style: GoogleFonts.poppins(
+                    child: Text("Amount",style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
-                      fontSize: width/20.84,
+                      fontSize: width/23.84,
                     )),
                   )
                 ],
@@ -92,38 +101,48 @@ class _OrderDetailsState extends State<OrderDetails> {
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context,index){
                           var cart= snapshot.data!.docs[index];
-                          return     Stack(
+                          return      Stack(
+
                             children: [
+
                               Padding(
                                 padding: EdgeInsets.only(left: 10.0),
                                 child: Column(
 
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(cart["name"],style: GoogleFonts.poppins(
+                                    Text("${cart["name"]} - ${cart["productsqunatity"]}",style: GoogleFonts.poppins(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
-                                      fontSize: width/20.84,
+                                      fontSize: width/25.84,
                                     )),
 
                                   ],
                                 ),
                               ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 175),
+                                child: Text(cart["orgprice"].toString(),style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: width/25.84,
+                                )),
+                              ),
 
                               Padding(
-                                padding: const EdgeInsets.only(left: 225.0),
+                                padding: const EdgeInsets.only(left: 240.0),
                                 child: Text(cart["quantity"].toString(),style: GoogleFonts.poppins(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: width/20.84,
+                                  fontSize: width/25.84,
                                 )),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 290.0),
+                                padding: const EdgeInsets.only(left: 300.0),
                                 child: Text("₹${cart["price"]}",style: GoogleFonts.poppins(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: width/20.84,
+                                  fontSize: width/25.84,
                                 )),
                               )
                             ],
@@ -217,8 +236,8 @@ class _OrderDetailsState extends State<OrderDetails> {
             ]
         )
       ) : widget.type=="typelist"?
-      SingleChildScrollView(
-          child: Column(
+      SingleChildScrollView(child:
+      Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
@@ -325,11 +344,20 @@ class _OrderDetailsState extends State<OrderDetails> {
 
                     Padding(
                       padding: const EdgeInsets.only(right: 25.0),
-                      child: Text("${widget.total.toString()}",style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: width/20.84,
-                      )),
+                      child: Row(
+                        children: [
+                          Text(widget.total==0?"":"Total",style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                            fontSize: width/20.84,
+                          )),
+                          Text(widget.total==0?"Your total wil be updated soon":"${widget.total.toString()}",style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: width/20.84,
+                          )),
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -384,8 +412,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                 ),
 
               ]
-          )
-      ) : SingleChildScrollView(
+          )) :
+      SingleChildScrollView(
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

@@ -216,7 +216,7 @@ class _MyordersState extends State<Myorders> {
             height: 300,
             child: Column(
               children: [
-                status=="ordered"? Lottie.asset('assets/odertracking.json',):Padding(
+                status=="ordered"|| status=="accepted"? Lottie.asset('assets/odertracking.json',):Padding(
                   padding: const EdgeInsets.only(bottom: 15.0),
                   child: Container(
                     height: 200,
@@ -229,7 +229,7 @@ class _MyordersState extends State<Myorders> {
 
                     Column(
                       children: [
-                        status=="ordered"?  Container(
+                        status=="ordered" ||  status=="accepted"?  Container(
                             width:30,height: 30,
                             child: Lottie.asset("assets/live.json",fit: BoxFit.fill)):
                         Container(

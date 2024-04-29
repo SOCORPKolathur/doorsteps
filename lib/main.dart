@@ -2,15 +2,19 @@ import 'package:doorsteps/Homepage.dart';
 import 'package:doorsteps/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:splashscreen/splashscreen.dart';
 
 import 'Locationpage.dart';
 import 'WelcomePage.dart';
-
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
@@ -47,36 +51,3 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class Splash extends StatefulWidget {
-  const Splash({Key? key}) : super(key: key);
-
-  @override
-  State<Splash> createState() => _SplashState();
-}
-
-class _SplashState extends State<Splash> {
-  @override
-  Widget build(BuildContext context) {
-    final double width=MediaQuery.of(context).size.width;
-    return SplashScreen(
-      seconds: 5,
-      photoSize: width/3.92,
-      useLoader: true,
-      backgroundColor:  primarycolor,
-      title: Text("Door Steps",style: GoogleFonts.rowdies(
-        color: Colors.white,
-        fontWeight: FontWeight.w600,
-        fontSize: width/7.84,
-      )),
-      image: Image.asset("assets/logo.png",
-        fit: BoxFit.contain,
-        alignment: Alignment.center,
-      ),
-      loadingText: Text("You name it,We carry it", textAlign: TextAlign.center,style: GoogleFonts.poppins(
-        color: Colors.white,
-        fontSize: width/21.7,
-      ),),
-      navigateAfterSeconds:WelcomePage(),
-    );
-  }
-}

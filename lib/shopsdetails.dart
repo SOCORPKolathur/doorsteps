@@ -137,7 +137,7 @@ class _ShopDState extends State<ShopD> {
                       padding: const EdgeInsets.only(left: 30.0, top: 10),
                       child: GestureDetector(
                         onTap: () {
-                          _showMyDialog(item["name"]);
+                          _showMyDialog(item["name"],widget.shopid);
                         },
                         child: Container(
 
@@ -167,7 +167,7 @@ class _ShopDState extends State<ShopD> {
       ),
     );
   }
-  Future<void> _showMyDialog(vendername) async {
+  Future<void> _showMyDialog(vendername,id) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -190,7 +190,7 @@ class _ShopDState extends State<ShopD> {
             GestureDetector(
               onTap: () async {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context)=> TypeList(vendername)));
+                    MaterialPageRoute(builder: (context)=> TypeList(vendername,id)));
               },
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
@@ -212,7 +212,7 @@ class _ShopDState extends State<ShopD> {
             GestureDetector(
               onTap: () async {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context)=> TakePhoto(vendername)));
+                    MaterialPageRoute(builder: (context)=> TakePhoto(vendername,id)));
               },
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),

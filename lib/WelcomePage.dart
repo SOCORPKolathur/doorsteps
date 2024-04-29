@@ -1,5 +1,6 @@
 import 'package:doorsteps/signin.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'const.dart';
@@ -12,6 +13,21 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  @override
+  void initState() {
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  Future<Position> getUserCurrentLocation() async {
+    await Geolocator.requestPermission().then((value){
+    }).onError((error, stackTrace) async {
+      await Geolocator.requestPermission();
+      print("ERROR"+error.toString());
+    });
+    return await Geolocator.getCurrentPosition();
+  }
   @override
   Widget build(BuildContext context) {
     final double width=MediaQuery.of(context).size.width;
@@ -30,7 +46,7 @@ class _WelcomePageState extends State<WelcomePage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Image.asset(logo),
-                Text("Welcomle \n to our Store",style: GoogleFonts.poppins(
+                Text("Welcome \n to our Store",style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontWeight: FontWeight.w800,
                   fontSize: width/7.84,
@@ -44,7 +60,9 @@ class _WelcomePageState extends State<WelcomePage> {
                 Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: GestureDetector(
-                    onTap: (){
+                    onTap: () async {
+                      getUserCurrentLocation();
+
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context)=> Signin())
                       );

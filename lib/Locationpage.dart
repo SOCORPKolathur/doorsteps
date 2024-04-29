@@ -180,6 +180,7 @@ class _LocationPageState extends State<LocationPage> {
     "pincode":pincode.text,
     "latitude":_currentPosition!.latitude,
     "longitude":_currentPosition!.longitude,
+      "biketaxi":false
 
 
     });
@@ -227,6 +228,7 @@ class _LocationPageState extends State<LocationPage> {
   TextEditingController name= new TextEditingController();
   TextEditingController area= new TextEditingController();
   TextEditingController pincode= new TextEditingController();
+
 
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
@@ -278,6 +280,7 @@ class _LocationPageState extends State<LocationPage> {
     await placemarkFromCoordinates(
         _currentPosition!.latitude, _currentPosition!.longitude)
         .then((List<Placemark> placemarks) {
+
       Placemark place = placemarks[0];
       setState(() {
         _currentAddress = '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea},';

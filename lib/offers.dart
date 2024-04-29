@@ -39,7 +39,7 @@ class _OffersState extends State<Offers> {
               ),
             ),
             StreamBuilder(
-              stream: FirebaseFirestore.instance.collection("products").snapshots(),
+              stream: FirebaseFirestore.instance.collection("Exclusive offers").snapshots(),
               builder: (context,snapshot){
                 if (!snapshot.hasData) {
                   return const Center(
@@ -62,7 +62,7 @@ class _OffersState extends State<Offers> {
                         child: GestureDetector(
                           onTap: (){
                             Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context)=> ProductPage(item.id))
+                                MaterialPageRoute(builder: (context)=> ProductPage(item.id,"Exclusive offers"))
                              );
                             },
                           child: Material(

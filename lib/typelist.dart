@@ -12,7 +12,8 @@ import 'listcheckout.dart';
 
 class TypeList extends StatefulWidget {
   String vendername;
-  TypeList(this.vendername);
+  String venderid;
+  TypeList(this.vendername,this.venderid);
 
   @override
   State<TypeList> createState() => _TypeListState();
@@ -61,7 +62,7 @@ TextEditingController listcon= new TextEditingController();
             child: GestureDetector(
               onTap: (){
                Navigator.of(context).push(
-                 MaterialPageRoute(builder: (context)=> ListCheckout(items,widget.vendername))
+                 MaterialPageRoute(builder: (context)=> ListCheckout(items,widget.vendername,widget.venderid))
                );
               },
               child: Shimmer(

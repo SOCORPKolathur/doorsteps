@@ -26,8 +26,18 @@ class _CartState extends State<Cart> {
   @override
   void initState() {
     getCartTotal();
+    getvenderid();
     // TODO: implement initState
     super.initState();
+  }
+  String venderid="";
+  getvenderid() async {
+  var document=await  FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Cart").get();
+  setState(() {
+    venderid=document.docs[0]["venderID"];
+
+  });
+  print(venderid);
   }
   @override
   Widget build(BuildContext context) {
@@ -97,7 +107,7 @@ class _CartState extends State<Cart> {
                               children: [
                                 ListTile(
                                   leading: CachedNetworkImage(imageUrl:cart["imgurl"]),
-                                  title: Text(cart["name"],style: GoogleFonts.poppins(
+                                  title: Text("${cart["name"]} - ${cart["productsqunatity"]}",style: GoogleFonts.poppins(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w700,
                                     fontSize: width/20.84,
@@ -219,10 +229,11 @@ class _CartState extends State<Cart> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 30.0, top: 650),
+            padding: const EdgeInsets.only(left: 30.0, top: 600),
             child: GestureDetector(
               onTap: () {
-               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CheckOut(total)));
+                getvenderid();
+               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CheckOut(total,venderid)));
               },
               child: Container(
 

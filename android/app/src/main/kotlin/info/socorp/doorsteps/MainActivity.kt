@@ -1,4 +1,4 @@
-package com.example.doorsteps
+package info.socorp.doorsteps
 
 import io.flutter.embedding.android.FlutterActivity
 

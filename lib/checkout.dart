@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:random_string/random_string.dart';
@@ -9,10 +11,12 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 
 import 'Homepage.dart';
 import 'const.dart';
+import 'modules/home/controllers/home_controller.dart';
 
 class CheckOut extends StatefulWidget {
-  CheckOut(this.total);
+  CheckOut(this.total,this.venderid);
   int total;
+  String venderid;
 
   @override
   State<CheckOut> createState() => _CheckOutState();
@@ -23,9 +27,14 @@ class _CheckOutState extends State<CheckOut> {
   @override
   void initState() {
     getuser();
+    getdelivery();
     // TODO: implement initState
     super.initState();
   }
+  getdelivery() async {
+
+  }
+  num plan = 0;
   @override
   Widget build(BuildContext context) {
     final double width=MediaQuery.of(context).size.width;
@@ -61,24 +70,32 @@ class _CheckOutState extends State<CheckOut> {
                       child: Text("Product",style: GoogleFonts.poppins(
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
-                fontSize: width/20.84,
+                fontSize: width/23.84,
                 )),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 90.0),
+                      child: Text("Price",style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: width/23.84,
+                      )),
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.only(left: 120.0),
+                      padding: const EdgeInsets.only(left: 10.0),
                       child: Text("Quantity",style: GoogleFonts.poppins(
                       color: Colors.black,
                         fontWeight: FontWeight.w600,
-                        fontSize: width/20.84,
+                        fontSize: width/23.84,
                       )),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0),
-                      child: Text("Price",style: GoogleFonts.poppins(
+                      child: Text("Amount",style: GoogleFonts.poppins(
     color: Colors.black,
     fontWeight: FontWeight.w600,
-    fontSize: width/20.84,
+    fontSize: width/23.84,
     )),
                     )
                   ],
@@ -113,34 +130,42 @@ class _CheckOutState extends State<CheckOut> {
 
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(cart["name"],style: GoogleFonts.poppins(
+                                      Text("${cart["name"]} - ${cart["productsqunatity"]}",style: GoogleFonts.poppins(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: width/20.84,
+                                        fontSize: width/25.84,
                                       )),
                                       Text(cart["subtitle"],style: GoogleFonts.poppins(
                                         color: Colors.black45,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: width/25.84,
+                                        fontSize: width/29.84,
                                       ),),
                                     ],
                                   ),
                                 ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 175),
+                                  child: Text(cart["orgprice"].toString(),style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: width/25.84,
+                                  )),
+                                ),
 
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 225.0),
+                                  padding: const EdgeInsets.only(left: 240.0),
                                   child: Text(cart["quantity"].toString(),style: GoogleFonts.poppins(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: width/20.84,
+                                    fontSize: width/25.84,
                                   )),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 290.0),
+                                  padding: const EdgeInsets.only(left: 300.0),
                                   child: Text("₹${cart["price"]}",style: GoogleFonts.poppins(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: width/20.84,
+                                    fontSize: width/25.84,
                                   )),
                                 )
                               ],
@@ -163,7 +188,7 @@ class _CheckOutState extends State<CheckOut> {
 
                     Padding(
                       padding: EdgeInsets.only(left: 10.0),
-                      child: Text("Total amount",style: GoogleFonts.poppins(
+                      child: Text("Subtotal",style: GoogleFonts.poppins(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
                         fontSize: width/20.84,
@@ -181,12 +206,63 @@ class _CheckOutState extends State<CheckOut> {
                     )
                   ],
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                  children: [
+
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.0),
+                      child: Text("Delivery Charges",style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: width/20.84,
+                      )),
+                    ),
+
+
+                    Padding(
+                      padding: const EdgeInsets.only(right: 25.0),
+                      child: Text("₹ ${deviverycharges.toString()}",style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: width/20.84,
+                      )),
+                    )
+                  ],
+                ),
+
 
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Divider(
                     color: Colors.black,
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                  children: [
+
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.0),
+                      child: Text("Total Amount to be paid",style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: width/20.84,
+                      )),
+                    ),
+
+
+                    Padding(
+                      padding: const EdgeInsets.only(right: 25.0),
+                      child: Text("₹ ${totalamount.toString()}",style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: width/20.84,
+                      )),
+                    )
+                  ],
                 ),
 
                 Padding(
@@ -249,12 +325,65 @@ class _CheckOutState extends State<CheckOut> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10.0,top: 10),
+                  padding: const EdgeInsets.only(left: 10.0,top: 2),
                   child: Text("- Change Address -",style: GoogleFonts.poppins(
                     color: primarycolor,
                     fontWeight: FontWeight.w700,
                     fontSize: width/20.84,
                   )),
+                ),
+                Row(
+                  children: <Widget>[
+                    new Radio(
+                      activeColor: primarycolor,
+                      focusColor: primarycolor,
+
+                      hoverColor: primarycolor,
+                      value: 0,
+                      groupValue: plan,
+
+                      onChanged: (val) {
+                        setState(() {
+                          plan = 0;
+                          print(plan);
+
+                        });
+                      },
+                    ),
+                    new Text(
+                      'Pay Online',
+                      style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: width/20.84,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    new Radio(
+                      activeColor: primarycolor,
+                      focusColor: primarycolor,
+                      hoverColor: primarycolor,
+                      value: 1,
+                      groupValue: plan,
+                      onChanged: (val) {
+                        setState(() {
+                          plan=1;
+
+                        });
+                      },
+                    ),
+                    new Text(
+                      'Cash on Delivery',
+                      style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: width/20.84,
+                      ),
+                    ),
+                  ],
                 ),
 
 
@@ -359,6 +488,7 @@ class _CheckOutState extends State<CheckOut> {
     setState((){
       ram = randomAlphaNumeric(10);
     });
+    //---------------------------------------------------Placing Order-------------
     var docu= await FirebaseFirestore.instance.collection("Users").doc(
         FirebaseAuth.instance.currentUser!.uid.toString()).collection("Cart").get();
     FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Orders").doc(ram).set(
@@ -366,15 +496,22 @@ class _CheckOutState extends State<CheckOut> {
           "timestamp": DateTime.now().microsecondsSinceEpoch,
           "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
           "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
-          "total":widget.total,
+          "subtotal":widget.total,
+          "delivery":deviverycharges,
+          "total":totalamount,
           "address":address,
           "name":name,
+          "userID":FirebaseAuth.instance.currentUser!.uid.toString(),
           "phone":phone,
           "orderid":ram,
+          "paymentmode":plan==0?"Online":"COD",
           "status":"ordered",
           "type":"products",
           "vender":docu.docs[0]["vender"],
           "products": docu.docs.length>=2?"${docu.docs[0]["name"]},${docu.docs[1]["name"]}":"${docu.docs[0]["name"]}...",
+          "latitude":latitude,
+          "longitude":longitude,
+          "venderID":docu.docs[0]["venderID"],
         });
 
     FirebaseFirestore.instance.collection("Orders").doc(ram).set(
@@ -382,18 +519,24 @@ class _CheckOutState extends State<CheckOut> {
           "timestamp": DateTime.now().microsecondsSinceEpoch,
           "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
           "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
-          "total":widget.total,
+          "subtotal":widget.total,
+          "delivery":deviverycharges,
+          "total":totalamount,
           "address":address,
           "name":name,
+          "userID":FirebaseAuth.instance.currentUser!.uid.toString(),
           "phone":phone,
           "orderid":ram,
+          "paymentmode":plan==0?"Online":"COD",
           "status":"ordered",
           "type":"products",
           "vender":docu.docs[0]["vender"],
           "products": docu.docs.length>=2?"${docu.docs[0]["name"]},${docu.docs[1]["name"]}":"${docu.docs[0]["name"]}...",
           "latitude":latitude,
           "longitude":longitude,
-        });
+          "venderID":docu.docs[0]["venderID"],
+        }
+        );
 
     for(int i=0;i<docu.docs.length;i++) {
       FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Orders").doc(ram).collection(ram).doc(i.toString()).set({
@@ -401,6 +544,7 @@ class _CheckOutState extends State<CheckOut> {
         "quantity": docu.docs[i]["quantity"],
         "name": docu.docs[i]["name"],
         "price": docu.docs[i]["price"],
+        "productsqunatity": docu.docs[i]["productsqunatity"],
         "orgprice": docu.docs[i]["orgprice"],
         "timestamp": DateTime.now().microsecondsSinceEpoch,
         "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
@@ -411,20 +555,52 @@ class _CheckOutState extends State<CheckOut> {
         "quantity": docu.docs[i]["quantity"],
         "name": docu.docs[i]["name"],
         "price": docu.docs[i]["price"],
+        "productsqunatity": docu.docs[i]["productsqunatity"],
         "orgprice": docu.docs[i]["orgprice"],
         "timestamp": DateTime.now().microsecondsSinceEpoch,
         "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
         "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
       });
     }
-
+    //---------------------------------------------------Updating Order to vender-------------
+    FirebaseFirestore.instance.collection('Shops').doc(widget.venderid).update({
+      "order":true,
+      "orderID":ram,
+    });
+    FirebaseFirestore.instance.collection('Shops').doc(widget.venderid).collection("Orders").doc(ram).set({
+      "timestamp": DateTime.now().microsecondsSinceEpoch,
+      "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
+      "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
+      "subtotal":widget.total,
+      "delivery":deviverycharges,
+      "total":totalamount,
+      "address":address,
+      "name":name,
+      "phone":phone,
+      "orderid":ram,
+      "paymentmode":plan==0?"Online":"COD",
+      "userID":FirebaseAuth.instance.currentUser!.uid.toString(),
+      "status":"ordered",
+      "type":"products",
+      "vender":docu.docs[0]["vender"],
+      "venderID":docu.docs[0]["venderID"],
+      "products": docu.docs.length>=2?"${docu.docs[0]["name"]},${docu.docs[1]["name"]}":"${docu.docs[0]["name"]}...",
+      "latitude":latitude,
+      "longitude":longitude,
+    });
+    homecontroller.findusers(ram,"order",vendortoken);
+    homecontroller.findusers(ram,"myorder",token);
   }
   String name ="";
   String phone ="";
   String pincode ="";
   String address ="";
+  String vendortoken ="";
+  String token ="";
   double latitude =0.00;
   double longitude =0.00;
+  double venderlatitude =0.00;
+  double venderlongitude =0.00;
   getuser() async {
     var document = await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid.toString()).get();
     Map<String, dynamic>? value = document.data();
@@ -433,10 +609,46 @@ class _CheckOutState extends State<CheckOut> {
       phone=value["phone"];
       pincode=value["pincode"];
       address=value["address"];
+      token=value["token"];
       latitude=double.parse(value["latitude"].toString());
       longitude=double.parse(value["longitude"].toString());
     });
-  }
+    var document2 = await FirebaseFirestore.instance.collection('Shops').doc(widget.venderid).get();
+    Map<String, dynamic>? value2 = document2.data();
+    setState(() {
+      venderlatitude=double.parse(value2!["latitude"].toString());
+      venderlongitude=double.parse(value2["longitude"].toString());
+      vendortoken=value2["token"];
+    });
+    print(venderlatitude);
+    print(venderlongitude);
+    print(latitude);
+    print(longitude);
+    var _distanceInMeters = await Geolocator.distanceBetween(
+      venderlatitude,
+      venderlongitude,
+      latitude,
+      longitude,
+    );
+    print("Kilometers");
+    print((_distanceInMeters*0.001).round());
+    if((_distanceInMeters*0.001).round()<=4){
+      setState(() {
+        deviverycharges=40;
+      });
 
+    }
+    else{
+      setState(() {
+        deviverycharges=10*(_distanceInMeters*0.001).round();
+      });
+    }
+    setState(() {
+      totalamount=deviverycharges+widget.total;
+    });
+  }
+  int deviverycharges=0;
+  int totalamount=0;
+  final homecontroller = Get.put(HomeController());
 
 }

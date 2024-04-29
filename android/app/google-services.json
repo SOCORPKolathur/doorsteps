@@ -41,6 +41,125 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620465120662:android:f9d7d88b5d1f23be98e9b7",
+        "android_client_info": {
+          "package_name": "com.example.doorsteps_delivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620465120662-emdtet1ndm3pvmi8nmja0f96eacbl27f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.doorsteps_delivery",
+            "certificate_hash": "0c490520831f4346e166b88d184f4299bafc8151"
+          }
+        },
+        {
+          "client_id": "620465120662-ghm3inuvpe4t5qgkalpa40vrqla3j4l2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_eT3oT-cOgqnn4zY39efA9Spb9j7ZHyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620465120662-ghm3inuvpe4t5qgkalpa40vrqla3j4l2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620465120662:android:5e903f62eb743da398e9b7",
+        "android_client_info": {
+          "package_name": "com.example.doorsteps_vendor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620465120662-qlks2p39s1asam00o1ab5b37tq60qhlb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.doorsteps_vendor",
+            "certificate_hash": "0c490520831f4346e166b88d184f4299bafc8151"
+          }
+        },
+        {
+          "client_id": "620465120662-ur4oj919sm0m2sq829n24ndjo5ouh8kd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.doorsteps_vendor",
+            "certificate_hash": "824c02e99b5bb87cbcca96ac94cb67ad27581250"
+          }
+        },
+        {
+          "client_id": "620465120662-ghm3inuvpe4t5qgkalpa40vrqla3j4l2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_eT3oT-cOgqnn4zY39efA9Spb9j7ZHyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620465120662-ghm3inuvpe4t5qgkalpa40vrqla3j4l2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620465120662:android:c4e7ede212edc64b98e9b7",
+        "android_client_info": {
+          "package_name": "info.socorp.doorsteps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620465120662-97tguh56sion9d2gssgijnv8gbqhpt7v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "info.socorp.doorsteps",
+            "certificate_hash": "0c490520831f4346e166b88d184f4299bafc8151"
+          }
+        },
+        {
+          "client_id": "620465120662-ghm3inuvpe4t5qgkalpa40vrqla3j4l2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_eT3oT-cOgqnn4zY39efA9Spb9j7ZHyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620465120662-ghm3inuvpe4t5qgkalpa40vrqla3j4l2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

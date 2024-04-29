@@ -2,17 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doorsteps/Homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:random_string/random_string.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
 import 'const.dart';
+import 'modules/home/controllers/home_controller.dart';
 
 class ListCheckout extends StatefulWidget {
  List items=[];
  String vendername;
- ListCheckout(this.items,this.vendername);
+ String vendrid;
+ ListCheckout(this.items,this.vendername,this.vendrid);
 
   @override
   State<ListCheckout> createState() => _ListCheckoutState();
@@ -33,6 +37,7 @@ class _ListCheckoutState extends State<ListCheckout> {
       phone=value["phone"];
       pincode=value["pincode"];
       address=value["address"];
+      token=value["token"];
       latitude=double.parse(value["latitude"].toString());
       longitude=double.parse(value["longitude"].toString());
     });
@@ -327,32 +332,147 @@ class _ListCheckoutState extends State<ListCheckout> {
       },
     );
   }
+  List pricelist =[];
   String ram="";
+  int deviverycharges=0;
+  double venderlatitude =0.00;
+  double venderlongitude =0.00;
+  String vendortoken ="";
+  String token ="";
   placeorder() async {
     setState((){
       ram = randomAlphaNumeric(10);
     });
-    var docu= await FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Cart").get();
+
+
+    var document = await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid.toString()).get();
+    Map<String, dynamic>? value = document.data();
+    setState(() {
+      name=value!["name"];
+      phone=value["phone"];
+      pincode=value["pincode"];
+      address=value["address"];
+      latitude=double.parse(value["latitude"].toString());
+      longitude=double.parse(value["longitude"].toString());
+    });
+    var document2 = await FirebaseFirestore.instance.collection('Shops').doc(widget.vendrid).get();
+    Map<String, dynamic>? value2 = document2.data();
+    setState(() {
+      vendortoken=value2!["token"];
+      venderlatitude=double.parse(value2["latitude"].toString());
+      venderlongitude=double.parse(value2["longitude"].toString());
+    });
+    print(venderlatitude);
+    print(venderlongitude);
+    print(latitude);
+    print(longitude);
+    var _distanceInMeters = await Geolocator.distanceBetween(
+      venderlatitude,
+      venderlongitude,
+      latitude,
+      longitude,
+    );
+    print("Kilometers");
+    print((_distanceInMeters*0.001).round());
+    if((_distanceInMeters*0.001).round()<=4){
+      setState(() {
+        deviverycharges=40;
+      });
+
+    }
+    else{
+      setState(() {
+        deviverycharges=10*(_distanceInMeters*0.001).round();
+      });
+    }
+    //----------------------------------------------
     FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Orders").doc(ram).set(
         {
           "timestamp": DateTime.now().microsecondsSinceEpoch,
           "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
           "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
-          "total":"Will Update You Soon..",
+          "subtotal":0,
+          "delivery":deviverycharges,
+          "total":0,
           "address":address,
           "name":name,
+          "userID":FirebaseAuth.instance.currentUser!.uid.toString(),
           "phone":phone,
           "orderid":ram,
+          "paymentmode":"COD",
           "status":"ordered",
           "type":"typelist",
           "vender":widget.vendername,
+          "venderID":widget.vendrid,
+          "latitude":latitude,
+          "longitude":longitude,
           "products": "You have given List Items",
         });
     FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection("Orders").doc(ram).collection(ram).doc("0").set({
       "productslist": widget.items,
+      "pricelist": pricelist,
       "timestamp": DateTime.now().microsecondsSinceEpoch,
       "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
       "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
     });
+    FirebaseFirestore.instance.collection("Orders").doc(ram).set(
+        {
+          "timestamp": DateTime.now().microsecondsSinceEpoch,
+          "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
+          "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
+          "subtotal":0,
+          "delivery":deviverycharges,
+          "total":0,
+          "address":address,
+          "name":name,
+          "userID":FirebaseAuth.instance.currentUser!.uid.toString(),
+          "phone":phone,
+          "orderid":ram,
+          "paymentmode":"COD",
+          "status":"ordered",
+          "type":"typelist",
+          "vender":widget.vendername,
+          "products": "You have given List Items",
+          "latitude":latitude,
+          "longitude":longitude,
+          "venderID":widget.vendrid,
+        }
+    );
+    FirebaseFirestore.instance..collection("Orders").doc(ram).collection(ram).doc("0").set({
+      "productslist": widget.items,
+      "pricelist": pricelist,
+      "timestamp": DateTime.now().microsecondsSinceEpoch,
+      "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
+      "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
+    });
+    FirebaseFirestore.instance.collection('Shops').doc(widget.vendrid).update({
+      "order":true,
+      "orderID":ram,
+    });
+    FirebaseFirestore.instance.collection('Shops').doc(widget.vendrid).collection("Orders").doc(ram).set({
+      "timestamp": DateTime.now().microsecondsSinceEpoch,
+      "time": "${DateTime.now().hour} : ${DateTime.now().minute}",
+      "date": "${DateTime.now().day} / ${DateTime.now().month} / ${DateTime.now().year}",
+      "subtotal":0,
+      "delivery":deviverycharges,
+      "total":0,
+      "address":address,
+      "name":name,
+      "phone":phone,
+      "orderid":ram,
+      "paymentmode":"COD",
+      "userID":FirebaseAuth.instance.currentUser!.uid.toString(),
+      "status":"ordered",
+      "type":"typelist",
+      "vender":widget.vendername,
+      "venderID":widget.vendrid,
+      "products": "You have given List Items",
+      "latitude":latitude,
+      "longitude":longitude,
+    });
+    homecontroller.findusers(ram,"order",vendortoken);
+    homecontroller.findusers(ram,"myorder",token);
   }
+
+  final homecontroller = Get.put(HomeController());
 }

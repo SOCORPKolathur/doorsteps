@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../const.dart';
@@ -16,12 +17,61 @@ class Fruits extends StatefulWidget {
 }
 
 class _FruitsState extends State<Fruits> {
+  int doccheck=0;
+  checkfun() async {
+    setState(() {
+      doccheck=0;
+    });
+    var doc1=  await FirebaseFirestore.instance.collection("Shops").get();
+    for(int i=0;i<doc1.docs.length;i++){
+      if(doc1.docs[i]["type1"]=="Fruits"||doc1.docs[i]["type2"]=="Fruits"||doc1.docs[i]["type3"]=="Fruits"){
+        setState(() {
+          doccheck=doccheck+1;
+        });
+      }
+    }
+  }
+  @override
+  void initState() {
+    checkfun();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final double width=MediaQuery.of(context).size.width;
     final double height=MediaQuery.of(context).size.height;
     return Scaffold(
-      body:SingleChildScrollView(
+      body:   doccheck==0? Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 50.0),
+            child: Text("Fresh Fruits & Vegetables",style: GoogleFonts.poppins(
+              color: Colors.black,
+              fontWeight: FontWeight.w700,
+              fontSize: width/15.84,
+            )),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Divider(
+              color: Colors.black,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 80.0),
+            child: Text("No Products Available",style: GoogleFonts.poppins(
+              color: Colors.black,
+              fontWeight: FontWeight.w700,
+              fontSize: width/15.84,
+            )),
+          ),
+          Container(
+              height:400,
+              child: SvgPicture.asset("assets/emptycart.svg")),
+
+        ],
+      ): SingleChildScrollView(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -54,6 +104,7 @@ class _FruitsState extends State<Fruits> {
               ),
               ListView(
                 shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 children:[
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance.collection("Shops").snapshots(),
@@ -71,9 +122,13 @@ class _FruitsState extends State<Fruits> {
                       return ListView.builder(
                           shrinkWrap: true,
                           itemCount: snapshot.data!.docs.length,
+                          physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context,index) {
                             var val = snapshot.data!.docs[index];
-                            return Padding(
+                            return
+                              val["type1"]=="Fruits"||val["type2"]=="Fruits"||val["type3"]=="Fruits"?
+
+                              Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Material(
                                 elevation: 2.0,
@@ -171,7 +226,7 @@ class _FruitsState extends State<Fruits> {
                                   ),
                                 ),
                               ),
-                            );
+                            ) : Container();
                           }
                       );
                     }
@@ -201,7 +256,10 @@ class _FruitsState extends State<Fruits> {
                           child: CircularProgressIndicator(),
                         );
                       }
-                      return Container(
+                      return
+
+
+                        Container(
                         height: 220,
                         child: ListView.builder(
                             shrinkWrap: true,
@@ -209,12 +267,14 @@ class _FruitsState extends State<Fruits> {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context,index){
                               var item= snapshot.data!.docs[index];
-                              return  Padding(
+                              return
+                                item["type"]=="Fruits"?
+                                Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: GestureDetector(
                                   onTap: (){
                                     Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context)=> ProductPage(item.id))
+                                        MaterialPageRoute(builder: (context)=> ProductPage(item.id,"products"))
                                     );
 
                                   },
@@ -317,13 +377,14 @@ class _FruitsState extends State<Fruits> {
                                     ),
                                   ),
                                 ),
-                              );
+                              ): Container();
                             }),
                       );
                     },
                   ),
     ]
               ),
+              SizedBox(height: 27,)
 
             ]
         ),
